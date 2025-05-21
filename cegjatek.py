@@ -54,3 +54,20 @@ def megrendeles_kezelese():
             penz += rendeles["haszon"]
         else:
             print("Nincs elég anyagod a nyomtatáshoz!")
+    else:
+            print("Megrendelés elutasítva.")
+
+for nap in range(1, 6):
+    print(f"\n=== {nap}. nap ===")
+    allapot_kiiras()
+    muvelet = input("Mit szeretnél csinálni? (rendelés / bolt / kilép): ").strip().lower()
+    if muvelet == "rendelés":
+        megrendeles_kezelese()
+    elif muvelet == "bolt":
+        bolt()
+    elif muvelet == "kilép":
+        break
+    else:
+        print("Ismeretlen parancs.")
+
+print(f"\nJáték vége! Végső egyenleged: {penz} Ft")
