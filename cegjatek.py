@@ -39,3 +39,18 @@ def bolt():
             print('Nincs elég pénzed ehhez a vásárláshoz.')
     else:
         print("Ismeretlen anyag.")
+
+def megrendeles_kezelese():
+    global penz
+    rendeles = random.choice(megrendelesek)
+    print(f"\nÚj megrendelés érkezett: {rendeles['targy']} ({rendeles['anyag']}) - {rendeles['haszon']} Ft")
+    valasz = input("Elfogadod a megrendelést? (i/n): ").strip().lower()
+    if valasz == "i":
+        szukseges_anyag = rendeles["anyag"]
+        if keszlet[szukseges_anyag] > 0:
+            keszlet[szukseges_anyag] -= 1
+            print("Nyomtatás folyamatban...")
+            print("Sikeres nyomtatás! Megkaptad a jutalmat.")
+            penz += rendeles["haszon"]
+        else:
+            print("Nincs elég anyagod a nyomtatáshoz!")
