@@ -111,3 +111,64 @@ keszlet_label.place(x=225, y=475, width=240, height=100)
 
 gomb_keret = tk.Frame(root)
 gomb_keret.place(x=20, y=100)
+
+tk.Button(
+    root,
+    text="Rendelés",
+    command=rendel,
+    width=20,
+    font=("Segoe UI", 12, "bold"),
+    fg="white",
+    bg="#78A0CE",
+    activebackground="#005A9E",
+    activeforeground="white",
+    relief="raised"
+).place(x=40, y=150)
+
+tk.Label(
+    root,
+    text="Bolt – válassz anyagot:",
+    font=("Segoe UI", 11, "bold"),
+    fg="#ffffff",
+    bg="#4e7ea5"
+).place(x=20, y=260)
+
+tk.Button(
+    root,
+    text="PLA - 10 Ft",
+    command=lambda: bolt("PLA"),
+    width=20,
+    font=("Segoe UI", 11),
+    bg="#ffffff",
+    fg="#000000",
+    relief="flat"
+).place(x=20, y=300)
+
+tk.Button(
+    root,
+    text="ABS - 5 Ft",
+    command=lambda: bolt("ABS"),
+    width=20,
+    font=("Segoe UI", 11),
+    bg="#ffffff",
+    fg="#000000",
+    relief="flat"
+).place(x=20, y=350)
+
+tk.Button(
+    root,
+    text="PETG - 3 Ft",
+    command=lambda: bolt("PETG"),
+    width=20,
+    font=("Segoe UI", 11),
+    bg="#ffffff",
+    fg="#000000",
+    relief="flat"
+).place(x=20, y=400)
+
+tk.Button(root, text="Kilépés", command=root.destroy, width=20).place(x=20, y=500)
+
+
+
+frissit()
+root.mainloop()
