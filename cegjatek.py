@@ -43,4 +43,71 @@ def rendel():
         tk.messagebox.showinfo("Info", "Elutasítottad a rendelést.")
 
     kovetkezo_nap()
+def bolt(anyag):
+    global penz
+    ar = anyag_arak[anyag]
+    if penz >= ar:
+        keszlet[anyag] += 1
+        penz -= ar
+        tk.messagebox.showinfo("Bolt", f"Vettél 1 db {anyag}-t.")
+    else:
+        tk.messagebox.showwarning("Nincs pénz", "Nincs elég pénzed.")
+    frissit()
 
+def kovetkezo_nap():
+    global nap
+    nap += 1
+    if nap > 5:
+        tk.messagebox.showinfo("Vége", f"A játék véget ért.\nVégső pénzed: {penz} Ft")
+        root.destroy()
+    else:
+        frissit()
+
+
+root = tk.Tk()
+root.title("Cégjáték")
+root.geometry("800x600")
+
+hatter_kep = Image.open("hatter_kep.png")  
+hatter_kep = hatter_kep.resize((800, 600), Image.LANCZOS)
+hatter = ImageTk.PhotoImage(hatter_kep)
+
+hatter_label = tk.Label(root, image=hatter)
+hatter_label.place(x=0, y=0, relwidth=1, relheight=1)
+
+status = tk.Label(root, text="", font=("Arial", 12), bg="lightgray", justify="left")
+status.place(x=20, y=20)
+
+status_label = tk.Label(
+    root,
+    text="",
+    font=("Segoe UI", 13, "bold"),
+    fg="#ffffff",
+    bg="#4e7ea5",
+    justify="left",
+    anchor="nw",
+    bd=2,
+    relief="groove",
+    padx=10,
+    pady=5
+)
+status_label.place(x=20, y=20, width=240, height=60)
+
+keszlet_label = tk.Label(
+    root,
+    text="",
+    font=("Segoe UI", 12, "bold"),
+    fg="#ffffff",
+    bg="#4e7ea5",
+    justify="left",
+    anchor="nw",
+    bd=2,
+    relief="groove",
+    padx=5,
+    pady=5
+)
+keszlet_label.place(x=225, y=475, width=240, height=100)
+
+
+gomb_keret = tk.Frame(root)
+gomb_keret.place(x=20, y=100)
