@@ -1,6 +1,11 @@
+import tkinter as tk
 import random
+from PIL import Image, ImageTk
+import tkinter.messagebox
 
-
+penz = 100
+nap = 1
+keszlet = {"PLA": 3, "ABS": 2, "PETG": 1}
 anyag_arak = {"PLA": 10, "ABS": 5, "PETG": 3}
 
 megrendelesek = [
@@ -9,65 +14,33 @@ megrendelesek = [
     {"targy": "Fogaskerék", "anyag": "PETG", "haszon": 30}
 ]
 
-penz = 100
-keszlet = {"PLA": 3, "ABS": 2, "PETG": 1}
+def frissit():
+    status_text = f"Nap: {nap}/5\nPénz: {penz} Ft"
+    status_label.config(text=status_text)
 
-def allapot_kiiras():
-    print(f"\nPénzed: {penz} Ft")
-    print("Készleted:")
-    for anyag, db in keszlet.items():
-        print(f"- {anyag}: {db} db")
+    keszlet_text = "Készlet:"
+    for anyag in keszlet:
+        keszlet_text += f"\n {anyag}: {keszlet[anyag]} db"
+    keszlet_label.config(text=keszlet_text)
 
-def bolt():
-    global penz
-    print("\nBolt – anyagvásárlás")
-    for anyag, ar in anyag_arak.items():
-        print(f"{anyag}: {ar} Ft/db")
-    valasztott_anyag = input("Melyik anyagot szeretnéd megvenni? (PLA/ABS/PETG): ").strip().upper()
-    if valasztott_anyag in anyag_arak:
-        try:
-            db_szam = int(input("Hány darabot szeretnél vásárolni?: "))
-        except ValueError:
-            print('Hibás darabszám.')
-            return
-        osszeg = db_szam * anyag_arak[valasztott_anyag]
-        if osszeg <= penz:
-            keszlet[valasztott_anyag] += db_szam
-            penz -= osszeg
-            print(f"Sikeresen vásároltál {db_szam} db {valasztott_anyag} anyagot.")
-        else:
-            print('Nincs elég pénzed ehhez a vásárláshoz.')
-    else:
-        print("Ismeretlen anyag.")
 
-def megrendeles_kezelese():
-    global penz
+def rendel():
+    global penz, nap
+    if nap > 5:
+        return
+
     rendeles = random.choice(megrendelesek)
-    print(f"\nÚj megrendelés érkezett: {rendeles['targy']} ({rendeles['anyag']}) - {rendeles['haszon']} Ft")
-    valasz = input("Elfogadod a megrendelést? (i/n): ").strip().lower()
-    if valasz == "i":
-        szukseges_anyag = rendeles["anyag"]
-        if keszlet[szukseges_anyag] > 0:
-            keszlet[szukseges_anyag] -= 1
-            print("Nyomtatás folyamatban...")
-            print("Sikeres nyomtatás! Megkaptad a jutalmat.")
+    eredmeny = tk.messagebox.askyesno("Rendelés", f"{rendeles['targy']} ({rendeles['anyag']}) - {rendeles['haszon']} Ft\nElfogadod?")
+
+    if eredmeny:
+        if keszlet[rendeles["anyag"]] > 0:
+            keszlet[rendeles["anyag"]] -= 1
             penz += rendeles["haszon"]
+            tk.messagebox.showinfo("Siker", "Sikeres nyomtatás!")
         else:
-            print("Nincs elég anyagod a nyomtatáshoz!")
+            tk.messagebox.showwarning("Hiba", "Nincs elég anyagod!")
     else:
-            print("Megrendelés elutasítva.")
+        tk.messagebox.showinfo("Info", "Elutasítottad a rendelést.")
 
-for nap in range(1, 6):
-    print(f"\n=== {nap}. nap ===")
-    allapot_kiiras()
-    muvelet = input("Mit szeretnél csinálni? (rendelés / bolt / kilép): ").strip().lower()
-    if muvelet == "rendelés":
-        megrendeles_kezelese()
-    elif muvelet == "bolt":
-        bolt()
-    elif muvelet == "kilép":
-        break
-    else:
-        print("Ismeretlen parancs.")
+    kovetkezo_nap()
 
-print(f"\nJáték vége! Végső egyenleged: {penz} Ft")
